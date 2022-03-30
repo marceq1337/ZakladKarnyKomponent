@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,16 +19,29 @@ namespace ZakladKarnyKomponent
              
         }
 
-        public string SprawdzOsadzonego(int nr_osadzonego) 
+        public DataTable SprawdzOsobe(int nr_osadzonego, String tabela) 
         {
             cnn.Open();
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM `osadzeni` WHERE nr="+nr_osadzonego, cnn);
-            var reader = cmd.ExecuteReader();
-            reader.Read();
-            string imie = reader.GetString(1);
-            string nazwisko = reader.GetString(2);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM `"+tabela+"` WHERE nr="+nr_osadzonego, cnn);
+            MySqlDataAdapter adapter;
+            DataTable wynik = new DataTable();
+            adapter = new MySqlDataAdapter(cmd);
+            adapter.Fill(wynik);
+            cnn.Close();
+            return wynik;
+        }
 
-            return imie+" "+nazwisko;
+        public DataTable SprawdzOsoby(String tabela)
+        {
+            cnn.Open();
+            string query = "SELECT * FROM " + tabela;
+            MySqlCommand cmd = new MySqlCommand(query, cnn);
+            MySqlDataAdapter adapter;
+            DataTable wynik = new DataTable();
+            adapter = new MySqlDataAdapter(cmd);
+            adapter.Fill(wynik);
+            cnn.Close();
+            return wynik;
         }
 
     }
