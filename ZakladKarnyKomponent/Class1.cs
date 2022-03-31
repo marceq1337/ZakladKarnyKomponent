@@ -44,5 +44,14 @@ namespace ZakladKarnyKomponent
             return wynik;
         }
 
+        public void WprowadzOsobe(string imie, string nazwisko, string nr_wieznia, string tabela)
+        {
+            cnn.Open();
+            MySqlCommand cmd = new MySqlCommand($"INSERT INTO `{tabela}` (`id`, `imie`, `nazwisko`, `nr`) VALUES (NULL, '{imie}', '{nazwisko}', '{nr_wieznia}');", cnn);
+            cmd.ExecuteNonQuery();
+            cnn.Close();
+        }
+
+
     }
 }
